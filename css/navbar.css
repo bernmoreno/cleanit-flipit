@@ -141,10 +141,32 @@
 
 /* ---- Responsive -------------------------------------------- */
 @media (max-width: 768px) {
+  /* Sticky navbar with solid background on mobile */
+  .navbar {
+    position: sticky;
+    top: 0;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  }
+
+  /* Shrink logo so navbar fits in 80px */
+  .navbar__logo-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Hide desktop links */
   .navbar__links {
     display: none;
   }
 
+  /* Hide CTA button in navbar — it's already in the mobile drawer */
+  .navbar .btn {
+    display: none;
+  }
+
+  /* Show hamburger */
   .navbar__burger {
     display: flex;
   }

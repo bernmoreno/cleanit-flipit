@@ -896,6 +896,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 }
 
 @media (max-width: 768px) {
+  :root { --nav-h: 80px; }
   .cards-grid,
   .services-grid,
   .testimonials-grid,
