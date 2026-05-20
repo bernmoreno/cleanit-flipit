@@ -1,8 +1,8 @@
 /* ============================================================
    Clean It Flip It — Navigation Styles
-   Used on: ALL pages
    ============================================================ */
 
+/* ---- Base navbar ------------------------------------------ */
 .navbar {
   position: static;
   z-index: 1000;
@@ -14,15 +14,25 @@
 
 .navbar__inner {
   height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 /* ---- Logo -------------------------------------------------- */
 .navbar__logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   gap: 10px;
   font-weight: 800;
   font-size: 1.25rem;
@@ -33,28 +43,43 @@
 .navbar__logo-icon {
   width: 600px;
   height: 600px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 
 /* ---- Desktop links ----------------------------------------- */
 .navbar__links {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   gap: 6px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar__links a {
+  display: block;
   padding: 8px 20px;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--color-mid);
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  -webkit-transition: background 0.2s, color 0.2s;
+          transition: background 0.2s, color 0.2s;
 }
 
 .navbar__links a:hover {
@@ -67,66 +92,146 @@
   color: var(--color-white);
 }
 
-/* ---- Mobile 3-link row (hidden on desktop) ----------------- */
+/* ---- Hamburger (hidden on desktop) ------------------------- */
+.navbar__burger {
+  display: none;
+}
+
+/* ---- Mobile quick-link row (hidden on desktop) ------------- */
 .navbar__mobile-links {
   display: none;
 }
 
-/* ---- Responsive -------------------------------------------- */
+/* =============================================================
+   MOBILE  (max-width: 768px)
+   ============================================================= */
 @media (max-width: 768px) {
 
-  /* Sticky navbar, auto height to fit two rows */
+  /* Sticky bar at the top */
   .navbar {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     height: auto;
     z-index: 10000;
-    background: var(--color-white);
-    border-bottom: 2px solid var(--color-border);
-    box-shadow: 0 2px 12px rgba(0,0,0,.08);
-    padding-bottom: 0;
+    background: #ffffff;
+    border-bottom: 2px solid #e5e7eb;
+    -webkit-box-shadow: 0 2px 12px rgba(0,0,0,.08);
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
   }
 
   .navbar .container {
-    padding-inline: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  /* Row 1: logo centred */
+  /* Row 1: logo left, hamburger right */
   .navbar__inner {
     height: auto;
-    justify-content: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     padding: 10px 0 6px;
   }
 
-  /* Hide desktop links and CTA on mobile */
+  /* Hide desktop links and CTA */
   .navbar__links {
-    display: none;
+    display: none !important;
   }
 
   .navbar__cta {
-    display: none;
+    display: none !important;
   }
 
-  /* Shrink logo for mobile */
+  /* Shrink logo */
   .navbar__logo-icon {
     width: 100px;
     height: 100px;
   }
 
-  /* Row 2: three nav links always visible */
+  /* ---- Hamburger button ------------------------------------ */
+  .navbar__burger {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    border-radius: 8px;
+    -webkit-transition: background 0.15s;
+            transition: background 0.15s;
+  }
+
+  .navbar__burger:hover,
+  .navbar__burger:focus {
+    background: #f3f4f6;
+    outline: none;
+  }
+
+  .navbar__burger-bar {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: #374151;
+    border-radius: 2px;
+    -webkit-transition: -webkit-transform 0.25s, opacity 0.25s;
+            transition: transform 0.25s, opacity 0.25s;
+    -webkit-transform-origin: center;
+            transform-origin: center;
+    pointer-events: none;
+  }
+
+  /* Animate bars to X when open */
+  .navbar__burger.is-active .navbar__burger-bar:nth-child(1) {
+    -webkit-transform: translateY(8px) rotate(45deg);
+            transform: translateY(8px) rotate(45deg);
+  }
+
+  .navbar__burger.is-active .navbar__burger-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar__burger.is-active .navbar__burger-bar:nth-child(3) {
+    -webkit-transform: translateY(-8px) rotate(-45deg);
+            transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* ---- Mobile quick-link row (Row 2) ----------------------- */
   .navbar__mobile-links {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     list-style: none;
     margin: 0;
-    padding: 0 0 10px;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid var(--color-border);
-    padding-top: 8px;
+    padding: 8px 0 10px;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border-top: 1px solid #e5e7eb;
   }
 
   .navbar__mobile-links li {
-    flex: 1;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     text-align: center;
   }
 
@@ -135,10 +240,11 @@
     padding: 8px 4px;
     font-size: 0.92rem;
     font-weight: 600;
-    color: var(--color-mid);
+    color: #6b7280;
     text-decoration: none;
     border-radius: 8px;
-    transition: background 0.2s, color 0.2s;
+    -webkit-transition: background 0.15s, color 0.15s;
+            transition: background 0.15s, color 0.15s;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
@@ -146,12 +252,165 @@
 
   .navbar__mobile-links a:hover,
   .navbar__mobile-links a:active {
-    background: var(--color-light);
-    color: var(--color-primary);
+    background: #f3f4f6;
+    color: #2563eb;
   }
 
   .navbar__mobile-links a.active {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: #2563eb;
+    color: #ffffff;
   }
+
+}
+
+/* =============================================================
+   MOBILE DRAWER  — appended to <body>, always on top
+   ============================================================= */
+
+/* Semi-transparent backdrop */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99998;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-overlay.is-open {
+  display: block;
+}
+
+/* Full-screen slide-down drawer panel */
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #ffffff;
+  z-index: 99999;
+  -webkit-box-shadow: 0 8px 32px rgba(0,0,0,.18);
+          box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.mobile-drawer.is-open {
+  display: block;
+}
+
+.mobile-drawer__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mobile-drawer__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.mobile-drawer__close {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 8px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-transition: background 0.15s;
+          transition: background 0.15s;
+}
+
+.mobile-drawer__close:hover,
+.mobile-drawer__close:focus {
+  background: #f3f4f6;
+  outline: none;
+}
+
+.mobile-drawer__links {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0 24px;
+}
+
+.mobile-drawer__links li {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.mobile-drawer__links a {
+  display: block;
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #374151;
+  text-decoration: none;
+  -webkit-transition: background 0.15s, color 0.15s;
+          transition: background 0.15s, color 0.15s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 52px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.mobile-drawer__links a:active,
+.mobile-drawer__links a:hover {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.mobile-drawer__links a.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* CTA link inside drawer */
+.mobile-drawer__cta-link {
+  display: block;
+  margin: 16px 24px 8px;
+  padding: 14px 20px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-drawer__cta-link:active {
+  background: #1d4ed8 !important;
 }
