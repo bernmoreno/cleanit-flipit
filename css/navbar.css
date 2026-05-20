@@ -64,6 +64,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .navbar__links li {
@@ -78,26 +79,48 @@
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 14px 0;
+  padding: 16px 0;
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-mid);
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 14px;
+  background: #fff;
   transition: background 0.2s, color 0.2s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.navbar__links a.active {
+.navbar__links a.active,
+.navbar__links a:hover {
   background: var(--color-primary);
-  color: var(--color-white);
+  color: #fff;
 }
 
-.navbar__links a:hover {
-  background: var(--color-light);
-  color: var(--color-primary);
+/* Make Get a Quote match other buttons in size */
+.navbar__cta {
+  display: block;
+  flex: 1 1 0%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 14px;
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  box-shadow: 0 4px 18px 0 rgba(37,99,235,0.10);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar__cta:hover {
+  background: #1d4ed8;
+  color: #fff;
 }
 
 /* ---- Hamburger (hidden on desktop) ------------------------- */
