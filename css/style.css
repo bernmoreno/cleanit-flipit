@@ -916,6 +916,8 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   .hero__stat--2 { display: none; }
   .section { padding-block: 60px; }
   .hero__inner { padding-block: 48px; }
+  /* Leave room for fixed bottom nav (64px) + safe area */
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
 }
 
 @media (max-width: 480px) {

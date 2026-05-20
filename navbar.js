@@ -72,10 +72,39 @@
     document.body.insertBefore(wrapper, document.body.firstChild);
   }
 
+  // ---- 1b. Inject Mobile Bottom Navigation ------------------
+  const bottomNavHTML = /* html */`
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile bottom navigation">
+      <a href="index.html" class="mobile-bottom-nav__item" id="mbn-home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+          <polyline points="9 21 9 12 15 12 15 21"/>
+        </svg>
+        <span>Home</span>
+      </a>
+      <a href="services.html" class="mobile-bottom-nav__item" id="mbn-services">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span>Services</span>
+      </a>
+      <a href="contact.html" class="mobile-bottom-nav__item" id="mbn-contact">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span>Contact</span>
+      </a>
+    </nav>
+  `;
+
+  const bottomNavWrapper = document.createElement('div');
+  bottomNavWrapper.innerHTML = bottomNavHTML;
+  document.body.appendChild(bottomNavWrapper.firstElementChild);
+
   // ---- 2. Mark active link ----------------------------------
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-  document.querySelectorAll('.navbar__links a, .navbar__drawer a').forEach(link => {
+  document.querySelectorAll('.navbar__links a, .navbar__drawer a, .mobile-bottom-nav__item').forEach(link => {
     const href = link.getAttribute('href');
     if (href === currentPage || (currentPage === '' && href === 'index.html')) {
       link.classList.add('active');
