@@ -237,8 +237,8 @@
 
   .navbar__mobile-links a {
     display: block;
-    padding: 8px 4px;
-    font-size: 0.92rem;
+    padding: 7px 2px;
+    font-size: 0.78rem;
     font-weight: 600;
     color: #6b7280;
     text-decoration: none;
