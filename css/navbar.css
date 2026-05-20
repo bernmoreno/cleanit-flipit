@@ -216,6 +216,7 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    flex-wrap: nowrap;
     list-style: none;
     margin: 0;
     padding: 8px 0 10px;
@@ -226,19 +227,21 @@
         -ms-flex-align: center;
             align-items: center;
     border-top: 1px solid #e5e7eb;
+    gap: 0;
   }
 
   .navbar__mobile-links li {
     -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
+        -ms-flex: 1 1 0%;
+            flex: 1 1 0%;
     text-align: center;
+    min-width: 0;
   }
 
   .navbar__mobile-links a {
     display: block;
-    padding: 7px 2px;
-    font-size: 0.78rem;
+    padding: 8px 0.5vw;
+    font-size: 0.82rem;
     font-weight: 600;
     color: #6b7280;
     text-decoration: none;
@@ -248,6 +251,15 @@
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .navbar__mobile-links a[href*="contact"],
+  .navbar__mobile-links a[href*="about"] {
+    padding-left: 2vw;
+    padding-right: 2vw;
   }
 
   .navbar__mobile-links a:hover,
