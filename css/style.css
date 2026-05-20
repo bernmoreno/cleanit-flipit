@@ -16,7 +16,7 @@
   --color-white:     #FFFFFF;
   --color-border:    #E2E8F0;
 
-  --nav-h:  320px;
+  --nav-h:  640px;
   --nav-overlay: 1;
   --radius: 12px;
   --shadow: 0 4px 24px rgba(0,0,0,.08);
@@ -904,7 +904,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 }
 
 @media (max-width: 768px) {
-  :root { --nav-h: 80px; }
+  :root { --nav-h: 140px; }
   .cards-grid,
   .services-grid,
   .testimonials-grid,
