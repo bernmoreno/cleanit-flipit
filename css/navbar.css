@@ -213,41 +213,36 @@
 
   /* ---- Mobile quick-link row (Row 2) ----------------------- */
   .navbar__mobile-links {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     flex-wrap: nowrap;
     list-style: none;
     margin: 0;
     padding: 8px 0 10px;
-    -webkit-box-pack: space-evenly;
-        -ms-flex-pack: space-evenly;
-            justify-content: space-evenly;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    justify-content: space-between;
+    align-items: center;
     border-top: 1px solid #e5e7eb;
     gap: 0;
   }
 
   .navbar__mobile-links li {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 1 0%;
-            flex: 1 1 0%;
-    text-align: center;
+    flex: 1 1 0%;
     min-width: 0;
+    text-align: center;
+    margin: 0;
+    padding: 0;
   }
 
   .navbar__mobile-links a {
     display: block;
-    padding: 8px 0.5vw;
-    font-size: 0.82rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 0;
+    font-size: 0.92rem;
     font-weight: 600;
     color: #6b7280;
     text-decoration: none;
     border-radius: 8px;
-    -webkit-transition: background 0.15s, color 0.15s;
-            transition: background 0.15s, color 0.15s;
+    transition: background 0.15s, color 0.15s;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
@@ -256,24 +251,9 @@
     text-overflow: ellipsis;
   }
 
-  .navbar__mobile-links a[href*="contact"],
-  .navbar__mobile-links a[href*="about"] {
-    padding-left: 4vw;
-    padding-right: 4vw;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 0.88rem;
-  }
-
-  .navbar__mobile-links a:hover,
-  .navbar__mobile-links a:active {
-    background: #f3f4f6;
-    color: #2563eb;
-  }
-
   .navbar__mobile-links a.active {
     background: #2563eb;
-    color: #ffffff;
+    color: #fff;
   }
 
 }
