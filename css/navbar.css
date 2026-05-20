@@ -60,15 +60,14 @@
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 24px;
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 100%;
 }
 
 .navbar__links li {
-  flex: 1 1 0%;
+  flex: none;
   min-width: 0;
   text-align: center;
   margin: 0;
@@ -77,42 +76,41 @@
 
 .navbar__links a {
   display: block;
-  width: 100%;
+  width: auto;
   box-sizing: border-box;
-  padding: 16px 0;
+  padding: 8px 20px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-mid);
   text-decoration: none;
-  border-radius: 14px;
-  background: #fff;
+  border-radius: 8px;
+  background: none;
   transition: background 0.2s, color 0.2s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.navbar__links a.active,
-.navbar__links a:hover {
+.navbar__links a.active {
   background: var(--color-primary);
   color: #fff;
 }
 
-/* Make Get a Quote match other buttons in size */
+.navbar__links a:hover {
+  background: var(--color-light);
+  color: var(--color-primary);
+}
+
 .navbar__cta {
   display: block;
-  flex: 1 1 0%;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 16px 0;
-  font-size: 1rem;
+  padding: 12px 28px;
+  font-size: 1.05rem;
   font-weight: 700;
   color: #fff;
   background: var(--color-primary);
   border-radius: 14px;
   text-align: center;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: 24px;
   box-shadow: 0 4px 18px 0 rgba(37,99,235,0.10);
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
@@ -130,7 +128,7 @@
 
 /* ---- Mobile quick-link row (hidden on desktop) ------------- */
 .navbar__mobile-links {
-  display: none;
+  display: none !important;
 }
 
 /* =============================================================
