@@ -258,8 +258,11 @@
 
   .navbar__mobile-links a[href*="contact"],
   .navbar__mobile-links a[href*="about"] {
-    padding-left: 2vw;
-    padding-right: 2vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 0.88rem;
   }
 
   .navbar__mobile-links a:hover,
