@@ -82,6 +82,8 @@
   background: none;
   border-radius: 8px;
   transition: background 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .navbar__burger:hover {
@@ -135,6 +137,9 @@
   color: var(--color-mid);
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 .navbar__drawer a:hover,

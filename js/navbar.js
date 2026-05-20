@@ -88,11 +88,10 @@
   const drawer = document.getElementById('navbar-drawer');
 
   if (burger && drawer) {
-    burger.addEventListener('click', () => {
+    burger.addEventListener('click', e => {
+      e.stopPropagation();
       const isOpen = drawer.classList.toggle('open');
       burger.setAttribute('aria-expanded', String(isOpen));
-      // Prevent body scroll when drawer is open
-      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
     // Close drawer on link click
@@ -100,7 +99,6 @@
       link.addEventListener('click', () => {
         drawer.classList.remove('open');
         burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
       });
     });
 
@@ -113,7 +111,6 @@
       ) {
         drawer.classList.remove('open');
         burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
       }
     });
 
@@ -122,7 +119,6 @@
       if (e.key === 'Escape' && drawer.classList.contains('open')) {
         drawer.classList.remove('open');
         burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
         burger.focus();
       }
     });
