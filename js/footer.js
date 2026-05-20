@@ -72,7 +72,6 @@
               <li><a href="services.html">Deep Clean</a></li>
               <li><a href="services.html">Move-In / Move-Out</a></li>
               <li><a href="services.html">Post-Renovation</a></li>
-              <li><a href="services.html">Property Staging</a></li>
             </ul>
           </div>
 
