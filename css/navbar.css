@@ -67,206 +67,91 @@
   color: var(--color-white);
 }
 
-/* ---- Hamburger button --------------------------------------- */
-.navbar__burger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 10px;
-  min-width: 44px;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: none;
-  border-radius: 8px;
-  transition: background 0.2s;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.navbar__burger:hover {
-  background: var(--color-light);
-}
-
-.navbar__burger span {
-  display: block;
-  width: 26px;
-  height: 2px;
-  background: var(--color-dark);
-  border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
-}
-
-/* Hamburger → X animation when open */
-.navbar__burger[aria-expanded="true"] span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.navbar__burger[aria-expanded="true"] span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-.navbar__burger[aria-expanded="true"] span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* ---- Mobile drawer ----------------------------------------- */
-.navbar__drawer {
-  display: none;
-  position: fixed;
-  top: var(--nav-h);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-white);
-  padding: 20px 24px;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 9999;
-  border-top: 1px solid var(--color-border);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.navbar__drawer.open {
-  display: flex;
-}
-
-.navbar__drawer a {
-  display: block;
-  padding: 14px 18px;
-  border-radius: 10px;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: var(--color-mid);
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  pointer-events: all;
-}
-
-.navbar__drawer a:hover,
-.navbar__drawer a.active {
-  background: var(--color-primary);
-  color: var(--color-white);
-}
-
-/* ---- Mobile Bottom Navigation Bar ------------------------- */
-.mobile-bottom-nav {
+/* ---- Mobile 3-link row (hidden on desktop) ----------------- */
+.navbar__mobile-links {
   display: none;
 }
 
 /* ---- Responsive -------------------------------------------- */
 @media (max-width: 768px) {
-  /* Sticky navbar with solid background on mobile */
+
+  /* Sticky navbar, auto height to fit two rows */
   .navbar {
     position: sticky;
     top: 0;
-    z-index: 1001;
+    height: auto;
+    z-index: 10000;
     background: var(--color-white);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    border-bottom: 2px solid var(--color-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    padding-bottom: 0;
   }
 
-  /* Shrink logo so navbar fits in mobile navbar height */
-  .navbar__logo-icon {
-    width: 120px;
-    height: 120px;
+  .navbar .container {
+    padding-inline: 16px;
   }
 
-  /* Hide desktop links */
+  /* Row 1: logo centred */
+  .navbar__inner {
+    height: auto;
+    justify-content: center;
+    padding: 10px 0 6px;
+  }
+
+  /* Hide desktop links and CTA on mobile */
   .navbar__links {
     display: none;
   }
 
-  /* Hide CTA button in navbar — it's already in the mobile drawer */
-  .navbar .btn {
+  .navbar__cta {
     display: none;
   }
 
-  /* Show hamburger */
-  .navbar__burger {
+  /* Shrink logo for mobile */
+  .navbar__logo-icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* Row 2: three nav links always visible */
+  .navbar__mobile-links {
     display: flex;
-  }
-
-  /* Drawer stops above the bottom nav bar */
-  .navbar__drawer {
-    top: var(--nav-h);
-    bottom: 64px;
-  }
-
-  /* Navbar sits above drawer */
-  .navbar {
-    z-index: 10000;
-  }
-
-  /* ---- Bottom navigation bar -------------------------------- */
-  .mobile-bottom-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    background: var(--color-white);
-    border-top: 1px solid var(--color-border);
-    box-shadow: 0 -2px 16px rgba(0,0,0,.08);
-    z-index: 1002;
-    align-items: stretch;
-    justify-content: stretch;
-    /* Safe area for notched phones */
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  .mobile-bottom-nav__item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 10px;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
-    gap: 3px;
-    color: var(--color-muted);
-    text-decoration: none;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    border-top: 1px solid var(--color-border);
+    padding-top: 8px;
+  }
+
+  .navbar__mobile-links li {
+    flex: 1;
+    text-align: center;
+  }
+
+  .navbar__mobile-links a {
+    display: block;
     padding: 8px 4px;
-    border-radius: 0;
-    transition: color 0.2s, background 0.2s;
-    -webkit-tap-highlight-color: transparent;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-mid);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
   }
 
-  .mobile-bottom-nav__item svg {
-    width: 22px;
-    height: 22px;
-    stroke: currentColor;
-    flex-shrink: 0;
-    transition: stroke 0.2s;
-  }
-
-  .mobile-bottom-nav__item:hover,
-  .mobile-bottom-nav__item:focus {
-    color: var(--color-primary);
-    background: rgba(21, 101, 192, 0.06);
-    outline: none;
-  }
-
-  .mobile-bottom-nav__item.active {
+  .navbar__mobile-links a:hover,
+  .navbar__mobile-links a:active {
+    background: var(--color-light);
     color: var(--color-primary);
   }
 
-  .mobile-bottom-nav__item.active svg {
-    stroke: var(--color-primary);
-  }
-
-  /* Dividers between tabs */
-  .mobile-bottom-nav__item + .mobile-bottom-nav__item {
-    border-left: 1px solid var(--color-border);
+  .navbar__mobile-links a.active {
+    background: var(--color-primary);
+    color: var(--color-white);
   }
 }
