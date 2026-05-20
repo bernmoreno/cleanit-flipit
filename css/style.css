@@ -20,7 +20,8 @@
   --nav-overlay: 1;
   --radius: 12px;
   --shadow: 0 4px 24px rgba(0,0,0,.08);
-  --font:   'Inter', sans-serif;
+  --font:   'LTC Goudy Thirty', sans-serif;
+
 }
 
 html { scroll-behavior: smooth; }
