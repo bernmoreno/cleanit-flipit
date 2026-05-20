@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  // ---- 1. Inject HTML ----------------------------------------
+  // ---- 1. Inject Navbar HTML into #navbar-root ---------------
   const navbarHTML = /* html */`
     <nav class="navbar" role="navigation" aria-label="Main navigation">
       <div class="container">
@@ -50,17 +50,132 @@
         </div>
       </div>
     </nav>
-
-    <!-- Mobile Drawer -->
-    <div class="navbar__drawer" id="navbar-drawer" role="dialog" aria-label="Mobile navigation">
-      <a href="index.html">Home</a>
-      <a href="services.html">Services</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="contact.html" class="btn btn--primary" style="margin-top:8px;justify-content:center;">Get a Free Quote</a>
-    </div>
   `;
+
+  // Mount navbar into #navbar-root if it exists, otherwise prepend to body
+  const root = document.getElementById('navbar-root');
+  if (root) {
+    root.innerHTML = navbarHTML;
+  } else {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = navbarHTML;
+    document.body.insertBefore(wrapper.firstElementChild, document.body.firstChild);
+  }
+
+  // ---- 2. Inject Mobile Drawer directly into <body> ----------
+  // (Must be a direct child of body so position:fixed works
+  //  correctly on all browsers including iOS Safari)
+  const drawerEl = document.createElement('div');
+  drawerEl.className = 'navbar__drawer';
+  drawerEl.id = 'navbar-drawer';
+  drawerEl.setAttribute('role', 'dialog');
+  drawerEl.setAttribute('aria-label', 'Mobile navigation');
+  drawerEl.innerHTML = `
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="contact.html" class="btn btn--primary" style="margin-top:8px;justify-content:center;text-align:center;">Get a Free Quote</a>
+  `;
+  document.body.appendChild(drawerEl);
+
+  // ---- 3. Inject Mobile Bottom Navigation into <body> --------
+  const bottomNavEl = document.createElement('nav');
+  bottomNavEl.className = 'mobile-bottom-nav';
+  bottomNavEl.id = 'mobile-bottom-nav';
+  bottomNavEl.setAttribute('aria-label', 'Mobile bottom navigation');
+  bottomNavEl.innerHTML = `
+    <a href="index.html" class="mobile-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+        <polyline points="9 21 9 12 15 12 15 21"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="services.html" class="mobile-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+      <span>Services</span>
+    </a>
+    <a href="contact.html" class="mobile-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      <span>Contact</span>
+    </a>
+  `;
+  document.body.appendChild(bottomNavEl);
+
+  // ---- 4. Mark active link ----------------------------------
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+  document.querySelectorAll('.navbar__links a, .navbar__drawer a, .mobile-bottom-nav__item').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+
+  // ---- 5. Mobile burger toggle ------------------------------
+  const burger = document.getElementById('navbar-burger');
+  const drawer = document.getElementById('navbar-drawer');
+
+  if (burger && drawer) {
+    burger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const isOpen = drawer.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(isOpen));
+      // Prevent body scroll when drawer is open
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close drawer on link click
+    drawer.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        drawer.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Close drawer on outside click
+    document.addEventListener('click', function (e) {
+      if (
+        drawer.classList.contains('open') &&
+        !drawer.contains(e.target) &&
+        !burger.contains(e.target)
+      ) {
+        drawer.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Close drawer on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        burger.focus();
+      }
+    });
+  }
+
+  // ---- 6. Sticky navbar shadow on scroll -------------------
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    window.addEventListener('scroll', function () {
+      navbar.style.boxShadow = window.scrollY > 10
+        ? '0 4px 20px rgba(0,0,0,.1)'
+        : '0 2px 12px rgba(0,0,0,.06)';
+    }, { passive: true });
+  }
+
+})();
 
   // Mount into #navbar-root if it exists, otherwise prepend to body
   const root = document.getElementById('navbar-root');
