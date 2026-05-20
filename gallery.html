@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="See the Clean It Flip It difference — real before and after photos from our cleaning and property transformation jobs." />
+  <title>Gallery | Clean It Flip It</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <style>
+    /* ---- Gallery list: one item per row ------------------ */
+    .gallery-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 48px;
+    }
+
+    .gallery-item {
+      display: flex;
+      justify-content: center;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .gallery-item:last-child { border-bottom: none; }
+
+    .gallery-item__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    .gallery-item__img-wrap {
+      width: 100%;
+      padding: 12px;
+      background: var(--color-light);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      cursor: zoom-in;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .gallery-item__img-wrap:hover {
+      transform: scale(1.01);
+      box-shadow: 0 12px 40px rgba(21,101,192,.18);
+    }
+
+    .gallery-item__img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .gallery-item__info {
+      flex: 1;
+    }
+
+    .gallery-item__badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(21,101,192,.1);
+      color: var(--color-primary);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .gallery-item__title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-dark);
+      margin-bottom: 10px;
+    }
+
+    .gallery-item__desc {
+      font-size: .95rem;
+      color: var(--color-muted);
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .gallery-item__open-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+
+    .gallery-item__open-btn:hover {
+      background: var(--color-primary-d);
+      transform: translateY(-1px);
+    }
+
+    /* ---- Widget / Lightbox ------------------------------- */
+    .widget-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(10,14,30,.92);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .widget-overlay.open { display: flex; }
+
+    .widget {
+      background: #1a1f36;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-width: 92vw;
+      max-height: 94vh;
+      box-shadow: 0 24px 80px rgba(0,0,0,.6);
+    }
+
+    /* Top toolbar */
+    .widget__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: #111629;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      gap: 10px;
+    }
+
+    .widget__title {
+      color: #fff;
+      font-size: .95rem;
+      font-weight: 700;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .widget__toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .widget__action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.85);
+      font-size: .78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      white-space: nowrap;
+    }
+
+    .widget__action-btn:hover { background: rgba(255,255,255,.18); }
+
+    .widget__action-btn svg { flex-shrink: 0; }
+
+    .widget__close {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.07);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+
+    .widget__close:hover { background: rgba(220,50,50,.5); }
+
+    /* Image area */
+    .widget__img-area {
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      min-height: 300px;
+      background: #12162b;
+    }
+
+    .widget__img {
+      display: block;
+      border-radius: 8px;
+      transform-origin: center center;
+      transition: transform .2s ease;
+      max-width: 90vw;
+      max-height: 80vh;
+      width: auto;
+      height: auto;
+      user-select: none;
+    }
+
+    /* Bottom zoom bar */
+    .widget__zoombar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: #111629;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+    .widget__zoom-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.07);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+    }
+
+    .widget__zoom-btn:hover { background: rgba(255,255,255,.2); }
+
+    .widget__zoom-pct {
+      color: rgba(255,255,255,.7);
+      font-size: .82rem;
+      font-weight: 700;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    .widget__zoom-slider {
+      -webkit-appearance: none;
+      width: 140px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,.2);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .widget__zoom-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+    }
+
+    /* ---- CTA strip --------------------------------------- */
+    .gallery-cta {
+      text-align: center;
+      margin-top: 64px;
+      padding: 48px 32px;
+      background: rgba(21,101,192,.06);
+      border-radius: var(--radius);
+    }
+
+    .gallery-cta h2 { font-size: 1.6rem; font-weight: 800; color: var(--color-dark); margin-bottom: 12px; }
+    .gallery-cta p  { color: var(--color-muted); margin-bottom: 28px; font-size: 1rem; }
+
+    @media (max-width: 760px) {
+      .gallery-item__inner { flex-direction: column; gap: 20px; }
+      .gallery-item__img-wrap { padding: 8px; }
+      .gallery-item__img { width: 100%; max-width: 100%; height: auto; }
+      .widget__img { max-width: 92vw; max-height: 60vh; }
+      .widget__zoom-slider { width: 90px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-root"></div>
+
+  <main class="page-content" id="main-content">
+
+    <!-- ---- Page Hero ------------------------------------- -->
+    <header class="page-hero" aria-labelledby="gallery-hero-heading">
+      <div class="container">
+        <p class="section__eyebrow" style="color:rgba(255,255,255,.75);">Our Work</p>
+        <h1 class="page-hero__title" id="gallery-hero-heading">Before &amp; After Gallery</h1>
+        <p class="page-hero__sub">Real results from real jobs — click any photo to open the viewer.</p>
+      </div>
+    </header>
+
+    <!-- ---- Gallery --------------------------------------- -->
+    <section class="section" aria-labelledby="gallery-heading">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__eyebrow">Transformations</span>
+          <h2 class="section__title" id="gallery-heading">See the Difference We Make</h2>
+          <p class="section__subtitle">Every photo is from an actual job — no filters, no staging tricks. Just clean.</p>
+        </div>
+
+        <div class="gallery-list">
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/before_after_kitchen.png','Kitchen Deep Clean')">
+                <img class="gallery-item__img" src="images/before_after_kitchen.png" alt="Kitchen deep clean before and after" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Kitchen Deep Clean</h3>
+                <p class="gallery-item__desc">A complete top-to-bottom kitchen transformation — grease, grime, and built-up residue removed from every surface, appliance, and cabinet.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/before_after_kitchen.png','Kitchen Deep Clean')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/gallery/bathroom.png','Bathroom Transformation')">
+                <img class="gallery-item__img" src="images/gallery/bathroom.png" alt="Bathroom transformation" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Bathroom Transformation</h3>
+                <p class="gallery-item__desc">Mould, soap scum, and hard-water stains eliminated — tiles, fixtures, and grout restored to a sparkling finish.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/gallery/bathroom.png','Bathroom Transformation')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/before_after_oven_door.png','Oven Deep Clean')">
+                <img class="gallery-item__img" src="images/before_after_oven_door.png" alt="Oven deep clean before and after" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Oven Deep Clean</h3>
+                <p class="gallery-item__desc">Burnt-on carbon, grease, and baked-in residue dissolved and removed — inside, racks, and door glass included.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/before_after_oven_door.png','Oven Deep Clean')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/gallery/stove.png','Stove Cleaning')">
+                <img class="gallery-item__img" src="images/gallery/stove.png" alt="Stove cleaning" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Stove Cleaning</h3>
+                <p class="gallery-item__desc">Burners, grates, and stovetop surfaces degreased and polished — looking brand new again.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/gallery/stove.png','Stove Cleaning')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/before_after_sink.png','Sink &amp; Basin Clean')">
+                <img class="gallery-item__img" src="images/before_after_sink.png" alt="Sink and basin cleaning before and after" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Sink &amp; Basin Clean</h3>
+                <p class="gallery-item__desc">Limescale, stains, and tarnish removed — sink, taps, and surrounding area left gleaming.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/before_after_sink.png','Sink & Basin Clean')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/before_after_toilet.png','Toilet Deep Clean')">
+                <img class="gallery-item__img" src="images/before_after_toilet.png" alt="Toilet deep clean before and after" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Toilet Deep Clean</h3>
+                <p class="gallery-item__desc">Stains, mineral deposits, and bacteria thoroughly removed inside and out — hygienically sanitized.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/before_after_toilet.png','Toilet Deep Clean')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/gallery/shower.png','Shower Restoration')">
+                <img class="gallery-item__img" src="images/gallery/shower.png" alt="Shower restoration" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Shower Restoration</h3>
+                <p class="gallery-item__desc">Grout lines, glass screens, and tiles descaled and restored — mould and soap scum completely gone.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/gallery/shower.png','Shower Restoration')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/gallery/shower 2.png','Shower Deep Clean')">
+                <img class="gallery-item__img" src="images/gallery/shower 2.png" alt="Shower deep clean" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Shower Deep Clean</h3>
+                <p class="gallery-item__desc">Heavy build-up tackled with professional-grade eco products — every corner scrubbed and sanitized.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/gallery/shower 2.png','Shower Deep Clean')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/gallery/all.png','Full Property Transformation')">
+                <img class="gallery-item__img" src="images/gallery/all.png" alt="Full property transformation" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Full Property Transformation</h3>
+                <p class="gallery-item__desc">Every room, every surface — a complete property clean and transformation from start to finish.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/gallery/all.png','Full Property Transformation')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-item__inner">
+              <div class="gallery-item__img-wrap" onclick="openWidget('images/gallery/Untitled-4.png','Additional Transformation')">
+                <img class="gallery-item__img" src="images/gallery/Untitled-4.png" alt="Additional transformation" loading="lazy" />
+              </div>
+              <div class="gallery-item__info">
+                <span class="gallery-item__badge">Before &amp; After</span>
+                <h3 class="gallery-item__title">Additional Transformation</h3>
+                <p class="gallery-item__desc">Another outstanding result — proof that no job is too tough for the Clean It Flip It team.</p>
+                <button class="gallery-item__open-btn" onclick="openWidget('images/gallery/Untitled-4.png','Additional Transformation')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  Open Viewer
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CTA strip -->
+        <div class="gallery-cta">
+          <h2>Ready for Your Own Transformation?</h2>
+          <p>Book a free quote today and let us show you what we can do for your space.</p>
+          <a href="contact.html" class="btn btn--primary">Get a Free Quote</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ---- Widget overlay --------------------------------- -->
+  <div class="widget-overlay" id="widget-overlay" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="widget" id="widget">
+
+      <!-- Toolbar -->
+      <div class="widget__toolbar">
+        <span class="widget__title" id="widget-title"></span>
+        <div class="widget__toolbar-actions">
+
+          <!-- Zoom In -->
+          <button class="widget__action-btn" id="w-zoom-in" aria-label="Zoom in">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            Zoom In
+          </button>
+
+          <!-- Zoom Out -->
+          <button class="widget__action-btn" id="w-zoom-out" aria-label="Zoom out">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            Zoom Out
+          </button>
+
+          <!-- Fullscreen -->
+          <button class="widget__action-btn" id="w-fullscreen" aria-label="Fullscreen">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            Fullscreen
+          </button>
+
+          <!-- Download -->
+          <button class="widget__action-btn" id="w-download" aria-label="Download image">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </button>
+
+          <!-- Reset -->
+          <button class="widget__action-btn" id="w-reset" aria-label="Reset zoom">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            Reset
+          </button>
+
+        </div>
+        <button class="widget__close" id="widget-close" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Image -->
+      <div class="widget__img-area" id="widget-img-area">
+        <img class="widget__img" id="widget-img" src="" alt="" />
+      </div>
+
+      <!-- Zoom bar -->
+      <div class="widget__zoombar">
+        <button class="widget__zoom-btn" id="w-minus" aria-label="Zoom out">&minus;</button>
+        <input class="widget__zoom-slider" id="w-slider" type="range" min="25" max="400" value="100" step="5" aria-label="Zoom level" />
+        <button class="widget__zoom-btn" id="w-plus" aria-label="Zoom in">&plus;</button>
+        <span class="widget__zoom-pct" id="w-pct">100%</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="footer-root"></div>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var scale = 1;
+      var STEP = 0.1, MIN = 0.25, MAX = 4;
+      var overlay   = document.getElementById('widget-overlay');
+      var wImg      = document.getElementById('widget-img');
+      var wTitle    = document.getElementById('widget-title');
+      var wPct      = document.getElementById('w-pct');
+      var wSlider   = document.getElementById('w-slider');
+      var currentSrc = '';
+
+      function setScale(s) {
+        scale = Math.min(MAX, Math.max(MIN, +s.toFixed(2)));
+        wImg.style.transform = 'scale(' + scale + ')';
+        wPct.textContent = Math.round(scale * 100) + '%';
+        wSlider.value = Math.round(scale * 100);
+      }
+
+      window.openWidget = function (src, title) {
+        currentSrc = src;
+        wImg.src = src;
+        wImg.alt = title;
+        wTitle.textContent = title;
+        setScale(1);
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      function closeWidget() {
+        overlay.classList.remove('open');
+        wImg.src = '';
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('widget-close').addEventListener('click', closeWidget);
+      document.getElementById('w-zoom-in').addEventListener('click',  function () { setScale(scale + 0.25); });
+      document.getElementById('w-zoom-out').addEventListener('click', function () { setScale(scale - 0.25); });
+      document.getElementById('w-plus').addEventListener('click',     function () { setScale(scale + STEP); });
+      document.getElementById('w-minus').addEventListener('click',    function () { setScale(scale - STEP); });
+      document.getElementById('w-reset').addEventListener('click',    function () { setScale(1); });
+
+      wSlider.addEventListener('input', function () { setScale(this.value / 100); });
+
+      document.getElementById('w-fullscreen').addEventListener('click', function () {
+        var el = document.getElementById('widget');
+        if (!document.fullscreenElement) {
+          el.requestFullscreen && el.requestFullscreen();
+        } else {
+          document.exitFullscreen && document.exitFullscreen();
+        }
+      });
+
+      document.getElementById('w-download').addEventListener('click', function () {
+        var a = document.createElement('a');
+        a.href = currentSrc;
+        a.download = currentSrc.split('/').pop();
+        a.click();
+      });
+
+      /* Scroll wheel zoom */
+      document.getElementById('widget-img-area').addEventListener('wheel', function (e) {
+        e.preventDefault();
+        setScale(scale + (e.deltaY < 0 ? STEP : -STEP));
+      }, { passive: false });
+
+      /* Close on backdrop */
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeWidget();
+      });
+
+      /* Keyboard */
+      document.addEventListener('keydown', function (e) {
+        if (!overlay.classList.contains('open')) return;
+        if (e.key === 'Escape') closeWidget();
+        if (e.key === '+' || e.key === '=') setScale(scale + STEP);
+        if (e.key === '-') setScale(scale - STEP);
+        if (e.key === '0') setScale(1);
+      });
+    })();
+  </script>
+</body>
+</html>
+  <style>
+    /* ---- Gallery Grid ------------------------------------ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 500px);
+      justify-content: center;
+      gap: 28px;
+      margin-top: 48px;
+    }
+
+    .gallery-card {
+      width: 500px;
+      background: var(--color-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+      cursor: zoom-in;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(21,101,192,.18);
+    }
+
+    .gallery-card__img {
+      width: 500px;
+      height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-card__body {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gallery-card__badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(21,101,192,.1);
+      color: var(--color-primary);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .gallery-card__title {
+      font-size: .92rem;
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    /* ---- Lightbox ---------------------------------------- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,.88);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox__img-wrap {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+    }
+
+    .lightbox__img {
+      display: block;
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      transform-origin: center center;
+      transition: transform .2s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .lightbox__controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lightbox__btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+      line-height: 1;
+    }
+
+    .lightbox__btn:hover { background: rgba(255,255,255,.25); }
+
+    .lightbox__zoom-level {
+      color: rgba(255,255,255,.7);
+      font-size: .85rem;
+      font-weight: 600;
+      min-width: 48px;
+      text-align: center;
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+    }
+
+    .lightbox__close:hover { background: rgba(255,255,255,.25); }
+
+    .lightbox__caption {
+      color: rgba(255,255,255,.75);
+      font-size: .9rem;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    /* ---- CTA strip --------------------------------------- */
+    .gallery-cta {
+      text-align: center;
+      margin-top: 64px;
+      padding: 48px 32px;
+      background: rgba(21,101,192,.06);
+      border-radius: var(--radius);
+    }
+
+    .gallery-cta h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--color-dark);
+      margin-bottom: 12px;
+    }
+
+    .gallery-cta p {
+      color: var(--color-muted);
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 560px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-card, .gallery-card__img { width: 100%; }
+      .gallery-card__img { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-root"></div>
+
+  <main class="page-content" id="main-content">
+
+    <!-- ---- Page Hero ------------------------------------- -->
+    <header class="page-hero" aria-labelledby="gallery-hero-heading">
+      <div class="container">
+        <p class="section__eyebrow" style="color:rgba(255,255,255,.75);">Our Work</p>
+        <h1 class="page-hero__title" id="gallery-hero-heading">Before &amp; After Gallery</h1>
+        <p class="page-hero__sub">Real results from real jobs — click any photo to zoom in and out.</p>
+      </div>
+    </header>
+
+    <!-- ---- Gallery --------------------------------------- -->
+    <section class="section" aria-labelledby="gallery-heading">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__eyebrow">Transformations</span>
+          <h2 class="section__title" id="gallery-heading">See the Difference We Make</h2>
+          <p class="section__subtitle">Every photo is from an actual job — no filters, no staging tricks. Just clean.</p>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/all.png','Full Property Transformation')">
+            <img class="gallery-card__img" src="images/gallery/all.png" alt="Full property transformation" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Full Property Transformation</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/kitchen.png','Kitchen Deep Clean')">
+            <img class="gallery-card__img" src="images/gallery/kitchen.png" alt="Kitchen deep clean" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Kitchen Deep Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/bathroom.png','Bathroom Transformation')">
+            <img class="gallery-card__img" src="images/gallery/bathroom.png" alt="Bathroom transformation" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Bathroom Transformation</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/oven.png','Oven Deep Clean')">
+            <img class="gallery-card__img" src="images/gallery/oven.png" alt="Oven deep clean" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Oven Deep Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/stove.png','Stove Cleaning')">
+            <img class="gallery-card__img" src="images/gallery/stove.png" alt="Stove cleaning" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Stove Cleaning</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/sink.png','Sink &amp; Basin Clean')">
+            <img class="gallery-card__img" src="images/gallery/sink.png" alt="Sink and basin cleaning" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Sink &amp; Basin Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/toilet.png','Toilet Deep Clean')">
+            <img class="gallery-card__img" src="images/gallery/toilet.png" alt="Toilet deep clean" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Toilet Deep Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/shower.png','Shower Restoration')">
+            <img class="gallery-card__img" src="images/gallery/shower.png" alt="Shower restoration" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Shower Restoration</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/shower 2.png','Shower Deep Clean')">
+            <img class="gallery-card__img" src="images/gallery/shower 2.png" alt="Shower deep clean" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Shower Deep Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card" onclick="openLightbox('images/gallery/Untitled-12.png','Additional Transformation')">
+            <img class="gallery-card__img" src="images/gallery/Untitled-12.png" alt="Additional transformation" loading="lazy" />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Additional Transformation</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CTA strip -->
+        <div class="gallery-cta">
+          <h2>Ready for Your Own Transformation?</h2>
+          <p>Book a free quote today and let us show you what we can do for your space.</p>
+          <a href="contact.html" class="btn btn--primary">Get a Free Quote</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ---- Lightbox overlay ------------------------------- -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image zoom viewer">
+    <button class="lightbox__close" id="lightbox-close" aria-label="Close">&times;</button>
+    <div class="lightbox__img-wrap">
+      <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+    </div>
+    <p class="lightbox__caption" id="lightbox-caption"></p>
+    <div class="lightbox__controls">
+      <button class="lightbox__btn" id="zoom-out" aria-label="Zoom out">&#8722;</button>
+      <span class="lightbox__zoom-level" id="zoom-level">100%</span>
+      <button class="lightbox__btn" id="zoom-in" aria-label="Zoom in">&#43;</button>
+      <button class="lightbox__btn" id="zoom-reset" aria-label="Reset zoom" title="Reset">&#8635;</button>
+    </div>
+  </div>
+
+  <div id="footer-root"></div>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var scale = 1;
+      var MIN = 0.5, MAX = 4, STEP = 0.25;
+      var lightbox  = document.getElementById('lightbox');
+      var lbImg     = document.getElementById('lightbox-img');
+      var lbCaption = document.getElementById('lightbox-caption');
+      var lbLevel   = document.getElementById('zoom-level');
+
+      function setScale(s) {
+        scale = Math.min(MAX, Math.max(MIN, s));
+        lbImg.style.transform = 'scale(' + scale + ')';
+        lbLevel.textContent = Math.round(scale * 100) + '%';
+      }
+
+      window.openLightbox = function (src, caption) {
+        lbImg.src = src;
+        lbImg.alt = caption;
+        lbCaption.textContent = caption;
+        setScale(1);
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        lbImg.src = '';
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+      document.getElementById('zoom-in').addEventListener('click', function () { setScale(scale + STEP); });
+      document.getElementById('zoom-out').addEventListener('click', function () { setScale(scale - STEP); });
+      document.getElementById('zoom-reset').addEventListener('click', function () { setScale(1); });
+
+      // Close on backdrop click
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      // Scroll wheel zoom
+      lightbox.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        setScale(scale + (e.deltaY < 0 ? STEP : -STEP));
+      }, { passive: false });
+
+      // Escape key
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === '+' || e.key === '=') setScale(scale + STEP);
+        if (e.key === '-') setScale(scale - STEP);
+        if (e.key === '0') setScale(1);
+      });
+    })();
+  </script>
+</body>
+</html>
+  <style>
+    /* ---- Gallery Grid ------------------------------------ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+    }
+
+    .gallery-card {
+      background: var(--color-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(21,101,192,.15);
+    }
+
+    .gallery-card__img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-card__body {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gallery-card__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(21,101,192,.1);
+      color: var(--color-primary);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .gallery-card__title {
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    /* ---- CTA strip --------------------------------------- */
+    .gallery-cta {
+      text-align: center;
+      margin-top: 64px;
+      padding: 48px 32px;
+      background: rgba(21,101,192,.06);
+      border-radius: var(--radius);
+    }
+
+    .gallery-cta h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--color-dark);
+      margin-bottom: 12px;
+    }
+
+    .gallery-cta p {
+      color: var(--color-muted);
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-root"></div>
+
+  <main class="page-content" id="main-content">
+
+    <!-- ---- Page Hero ------------------------------------- -->
+    <header class="page-hero" aria-labelledby="gallery-hero-heading">
+      <div class="container">
+        <p class="section__eyebrow" style="color:rgba(255,255,255,.75);">Our Work</p>
+        <h1 class="page-hero__title" id="gallery-hero-heading">Before &amp; After Gallery</h1>
+        <p class="page-hero__sub">Real results from real jobs — see the Clean It Flip It transformation difference.</p>
+      </div>
+    </header>
+
+    <!-- ---- Gallery --------------------------------------- -->
+    <section class="section" aria-labelledby="gallery-heading">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__eyebrow">Transformations</span>
+          <h2 class="section__title" id="gallery-heading">See the Difference We Make</h2>
+          <p class="section__subtitle">Every photo is from an actual job — no filters, no staging tricks. Just clean.</p>
+        </div>
+
+        <div class="gallery-grid">
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/before_after_kitchen.png"
+              alt="Before and after kitchen cleaning"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Kitchen Deep Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/before_after_oven_door.png"
+              alt="Before and after oven door cleaning"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Oven Door Restoration</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/before_after_over.png"
+              alt="Before and after oven cleaning"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Oven Deep Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/before_after_sink.png"
+              alt="Before and after sink cleaning"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Sink &amp; Basin Cleaning</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/before_after_toilet.png"
+              alt="Before and after toilet cleaning"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Bathroom Transformation</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/before_after.png"
+              alt="Before and after property cleaning"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">Before &amp; After</span>
+              <span class="gallery-card__title">Full Property Clean</span>
+            </div>
+          </div>
+
+          <div class="gallery-card">
+            <img
+              class="gallery-card__img"
+              src="images/after-kitchen.png"
+              alt="After photo of professionally cleaned kitchen"
+              loading="lazy"
+            />
+            <div class="gallery-card__body">
+              <span class="gallery-card__badge">After</span>
+              <span class="gallery-card__title">Kitchen — Final Result</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CTA strip -->
+        <div class="gallery-cta">
+          <h2>Ready for Your Own Transformation?</h2>
+          <p>Book a free quote today and let us show you what we can do for your space.</p>
+          <a href="contact.html" class="btn btn--primary">Get a Free Quote</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
